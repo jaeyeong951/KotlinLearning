@@ -16,7 +16,7 @@
 - 우리가 그동안 자연스레 써온 대부분의 변수(Integer, String ...)는 모두 1급 객체.
 - 코틀린에서는 함수도 1급 객체이다.(자바는 아님) → 함수가 매개변수가 되며, 반환값이 되고, 할당의 대상이 될 수 있다.
 
-[자바 Lambda](Kotlin%201%20f400556a196f42df988e5d7133161870/%E1%84%8C%E1%85%A1%E1%84%87%E1%85%A1%20Lambda%205a2955e6661f4d39aba8d53423f143e3.md)
+[자바 Lambda](https://github.com/jaeyeong951/KotlinLearning/blob/main/%E1%84%8C%E1%85%A1%E1%84%87%E1%85%A1%20Lambda.md)
 
 ### 불변성(immutability)
 
