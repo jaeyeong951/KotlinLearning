@@ -1,6 +1,4 @@
-# Kotlin 2.
-
-# 코틀린 기초
+# Kotlin 2. 코틀린 기초
 
 ## 문(statement)과 식(expression)
 
