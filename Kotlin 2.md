@@ -306,3 +306,91 @@ val oneToTen = 1..10
 코틀린의 range는 폐구간(닫힌 구간 = 범위의 양 끝값을 포함하는 구간)이다.
 
 어떤 범위에 속한 값을 일정한 순서로 이터레이션하는 경우를 수열이라고 부른다.
+
+```kotlin
+for(i in 1..100) {
+	println(i) // 1부터 100까지 출력
+}
+```
+
+```kotlin
+for(i in 100 downTo 1 step 2) {
+	print(i) // 100부터 1까지 2씩 감소하며 출력
+}
+```
+
+step을 사용하면 증가 혹은 감소 값을 1이 아닌 다른 수로 바꿀 수 있다.
+
+..는 항상 범위의 끝 값을 포함하지만 until을 사용하면 끝 값을 포함하지 않는 반만 닫힌 범위(반폐구간, 반개구간)에 대해 이터레이션할 수 있다. 
+
+```kotlin
+for(x in 0 until size) 
+// 둘은 같은 의미
+for(x in 0..size-1)
+```
+
+### 맵에 대한 이터레이션
+
+```kotlin
+val binaryReps = TreeMap<Char, String>()
+
+for(c in 'A'..'F') { // A부터 F까지 문자의 범위를 사용해 이터레이션
+	val binary = Integer.toBinaryString(c.toInt()) // 아스키를 2진표현으로 변환
+	binaryReps[c] = binary // c를 키로 c의 2진 표현을 map에 넣는다.
+	// binaryReps.put(c, binary) -> 자바식 표현, 위와 똑같이 기능
+}
+
+for((letter, binary) in binaryReps) { // map에 대해 이터레이션, map의 키와 값을 두 변수에 각각 대입
+	println("${letter} = ${binary}") 
+}
+```
+
+'A'..'F'는 A부터 F에 이르는 문자를 모두 포함하는 범위를 만든다.
+
+위와 같이 컬렉션의 원소를 풀어 for 루프를 사용해 이터레이션할 수 있다. 원소를 풀어서 각각 letter와 binary라는 변수에 저장한다.
+
+이런 구조 분해 구문은 맵이 아닌 다른 컬렉션에도 활용할 수 있다. 
+
+인덱스를 저장하기 위한 변수를 별도로 선언하고 루프에서 매번 그 변수를 증가시킬 필요가 없는 것이다.
+
+```kotlin
+val list = arrayListOf("10", "11", "1001")
+
+for((index, element) in list.withIndex()) { // 인덱스와 함께 컬렉션을 이터레이션
+	println("${index}: ${element}")
+}
+```
+
+### in으로 컬렉션이나 범위의 원소 검사
+
+in 연산자를 사용해 어떤 값이 어떤 범위에 속하는지 검사할 수 있고, 이와 반대로 !in 을 사용해 어떤 값이 어떤 범위에 속하지 않는지도 검사할 수 있다.
+
+```kotlin
+fun isLetter(c: Char) = c in 'a'..'z' || c in 'A'..'Z'
+
+fun isNotDigit(c: Char) = c !in '0'..'9'
+```
+
+위의 코드는 아주 간단하지만 내부 비교 로직은 표준 라이브러리의 range 클래스 구현 안에 깔끔하게 감춰져 있다.
+
+`c in 'a'..'z'` 는 `'a' ≤ c && c ≤ 'z'` 로 변환된다.
+
+in이나 !in은 when에도 활용할 수 있다.
+
+```kotlin
+fun recognize(c: Char) = when(c) {
+	in '0'..'9' -> "It's a digit!"
+	in 'a'..'z', in 'A'..'Z' -> "It's a letter!" // 여러 범위 조건을 함께 사용할 수 있다.
+	else -> "I don't know..."
+}
+```
+
+범위는 문자에만 국한되지는 않는다. 비교가 가능한 클래스라면(java.lang.Comparable 인터페이스를 구현한 클래스라면) 그 클래스의 인스턴스 객체를 사용해 범위를 만들 수 있다.
+
+물론 Comparable을 사용할 경우 범위의 모든 객체를 이터레이션할 수는 없다. 그 예로, 'Java' 와 'Kotlin' 사이의 모든 문자열을 이터레이션할 수는 없다. 하지만 그 두 문자열 사이의 범위 안에 속하는 지는 검사할 수 있다.
+
+```kotlin
+println("Kotlin" in "Java".."Scala") // true
+```
+
+String 클래스는 Comparable 인터페이스가 알파벳 순서로 비교하도록 구현되어 있기 때문에 in 검사에서도 문자열을 알파벳 순서로 비교하여(`"Java" ≤ "Kotlin" && "Kotlin" ≤ "Scala"`) 결과를 도출해 낸다.
