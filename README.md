@@ -1,2 +1,2 @@
-# KotlinLearning
-What I Studied About Kotlin.
+# Initial page
+
